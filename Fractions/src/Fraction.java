@@ -16,9 +16,13 @@ public class Fraction {
     public Fraction add(Fraction other) {
         Fraction result = new Fraction(numerator, denominator);
         if (denominator != other.denominator) {
-            int lcm = lcm(numerator, denominator);
-            result.denominator *= (lcm/denominator) + (other.denominator * (lcm/other.denominator));
+            int lcm = lcm(result.denominator, other.denominator);
+            result.denominator = lcm;
+            result.numerator = (numerator * (lcm/denominator)) + (other.numerator * (lcm/other.denominator));
+        } else {
+            result.numerator += other.numerator;
         }
+        result.reduce();
         return result;
     }
 
@@ -34,7 +38,7 @@ public class Fraction {
         denominator /= gcd;
     }
 
-    static int gcd(int a, int b)
+    private static int gcd(int a, int b)
     {
         if(b == 0)
         {
@@ -43,7 +47,7 @@ public class Fraction {
         return gcd(b, a % b);
     }
 
-    static int lcm(int a, int b)
+    private static int lcm(int a, int b)
     {
         return (a / gcd(a, b)) * b;
     }
